@@ -1,0 +1,113 @@
+Selamlar Arkadaşlar,
+
+Büyük bir iş veya işlem olmadığından dolayı buradaki örnekleri Android Studio üzerinden Java şeklinde paylaşmadım.
+
+Aşağıdaki kod satırlarını direk projenize ekleyerek kullabilirsiniz. Yeri geldikçe hem Kotlin hem de Java üzerinden ayrı ayrı örnekleri
+paylaşacağız.
+
+1.Örnek - Basit Toast Mesajı -
+Toast mesajlarını çeşitli şekillerde gösterebilirsiniz.
+Kotlin ->   
+                Toast.makeText(context, text, duration).show()
+            <!-- Arkadaşlar parantez içerisindeki text değeri yerine tırnak içerisinde istediğiniz mesajı, duration içerisine ise mesajın
+            gösterilme süresini yazabilirsiniz. Mesajın kısaca gösterilmesi için LENGTH_SHORT, daha uzun süre görüntülenmesi için ise
+        LENGTH_LONG yazabilirsiniz. -->
+
+            Örnek
+            Toast.makeText(context, "Gösterilmesini istediğiniz mesajı buraya yazın.", LENGTH_LONG).show()
+
+Java -> 
+            Aslında Java ile Kotlin arasında kayda değer pek de bir fark bulunmuyor bu tür kodlarda. Zaten Kotlinde komplike olan Java dilini
+            daha sade ve kolay anlışılır hale getirmek için ortaya konan bir dil.
+
+            Javada dikkat edilmesi gereken programcılarında sık sık sorun yaşadığı noktalı virgül olayı.
+
+            Toast.makeText(getApplicationContext, text, duration).show();
+
+            Burada da Kotlinde olduğu gibi text ve duration değerlerini değiştirip kullanabilirsiniz.
+
+
+2.Örnek - Kişiselleştirilebilir Toast Mesajı -
+            
+            Öncelikle mesajın konumunu nasıl değiştirebiliceğinizden bahsedelim. Çünkü custom olarak aşağıda görüntülenen toast mesajlarını
+            isterseniz uygulama isterseniz de oyun projelerinde doğru şekilde konumlandırmanız daha profesyonel işler yapmanız açısından 
+            yararlı olacaktır.
+
+            - Konum -
+
+            toast.setGravity(Gravity.TOP|Gravity.LEFT, 0, 0);
+
+            Burada Grativy.TOP değeri bize ekranın üst tarafına konumlardırma yapma olanağı veriyor. Burada ekranın sağına ortasına veya 
+            sol tarafına koyup koymamayı ise Gravity.LEFT kısmını aşağıda vereceğimiz şekilde değiştirebilirsiniz.
+
+            TOP -> Üst
+            BOTTOM -> Alt
+            LEFT -> Sol
+            RIGHT -> Sağ
+            CENTER -> Merkez
+            CENTER_HORIZONTAL -> Yatay olarak ortala
+            CENTER_VERTICAL -> Dikey olarak ortala
+
+            TOAST MESAJINI RENK - ŞEKİL BAKIMINDAN ÖZELLEŞTİRMEK.
+
+            Aşağıda Tasarım yani XML sayfasına eklemeniz gereken kodlar bulunmaktadır.
+            layout klasörü içerisinde toastmesaji adında bir XML dosyası oluşturun. İsim size kalmış burada örnek olarak isimlendirme 
+            yaptım.
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/toastarka"
+                  android:orientation="horizontal"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:padding="8dp"
+                  android:background="#DAAA"
+                  >
+            <ImageView android:src="@drawable/droid"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginRight="8dp"
+                   />
+            <TextView android:id="@+id/yazimiz"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="#FFF"
+                  />
+            </LinearLayout>
+
+            İçerisine bu kodları yapıştırın.
+
+            -KOTLİN-
+
+            val inflater = layoutInflater
+            val container: ViewGroup = findViewById(R.id.toastarka)
+            val layout: ViewGroup = inflater.inflate(R.layout.toastmesaji, container)
+            val text: TextView = layout.findViewById(R.id.yazimiz)
+            text.text = "Görüntülenecek mesajı buraya yazınız."
+            with (Toast(applicationContext)) {
+                setGravity(Gravity.CENTER_VERTICAL, 0, 0) <!-- Burada konumlandırmayı yukarıda yaptığımız gibi yapabilirsiniz.-->
+                duration = Toast.LENGTH_LONG <!-- Süre ayarını buradan yapabilirsiniz.-->
+                view = layout
+                show()
+                }
+
+            -JAVA-
+
+            LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.toastmesaji,
+                    (ViewGroup) findViewById(R.id.toastarka));
+
+                TextView text = (TextView) layout.findViewById(R.id.yazimiz);
+                text.setText("Buraya istediğiniz mesajı yazabilirsiniz.");
+
+                Toast toast = new Toast(getApplicationContext());
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0); <!-- Konumlandırmayı buradan yapabilirsiniz.-->
+                toast.setDuration(Toast.LENGTH_LONG); <!-- Süre ayarını da buradan yapabilirsiniz.-->
+                toast.setView(layout);
+                toast.show();
+
+
+                Bu sayfada herhangi bir sorun veya başka bir durum ile karşılaşırsanız bunu bana github üzerinden bildirmeniz durumunda geri
+                dönüş yapmaya çalışacağım. Umarım yararlı olmuştur. Kolay Gelsin.
+            
+
